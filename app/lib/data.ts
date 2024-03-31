@@ -36,7 +36,7 @@ function logAsyncCostTime<T extends (...args: any[]) => Promise<any>>(
 export const fetchRevenue = logAsyncCostTime(async () => {
   // Add noStore() here to prevent the response from being cached.
   // This is equivalent to in fetch(..., {cache: 'no-store'}).
-  noStore();
+  // noStore();
   try {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
@@ -76,7 +76,7 @@ export async function fetchLatestInvoices() {
 }
 
 export async function fetchCardData() {
-  noStore();
+  // noStore();
   try {
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
