@@ -20,20 +20,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 //   }) as T;
 // }
 
-function logAsyncCostTime<T extends (...args: any[]) => Promise<any>>(
-  func: T,
-): T {
-  return (async (...args: Parameters<T>) => {
-    const start = new Date();
-    const result = await func(...(args as any));
-    console.log(
-      'cost time: ' + (new Date().getTime() - start.getTime()) + 'ms',
-    );
-    return result;
-  }) as T;
-}
-
-export const fetchRevenue = logAsyncCostTime(async () => {
+export async function fetchRevenue() {
   // Add noStore() here to prevent the response from being cached.
   // This is equivalent to in fetch(..., {cache: 'no-store'}).
   // noStore();
@@ -41,7 +28,7 @@ export const fetchRevenue = logAsyncCostTime(async () => {
     // Artificially delay a response for demo purposes.
     // Don't do this in production :)
 
-    console.log('Fetching revenue data...');
+    // console.log('Fetching revenue data...');
     // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const data = await sql<Revenue>`SELECT * FROM revenue`;
@@ -52,10 +39,10 @@ export const fetchRevenue = logAsyncCostTime(async () => {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch revenue data.');
   }
-});
+}
 
 export async function fetchLatestInvoices() {
-  // noStore();
+  noStore();
   try {
     const data = await sql<LatestInvoiceRaw>`
       SELECT invoices.amount, customers.name, customers.image_url, customers.email, invoices.id
